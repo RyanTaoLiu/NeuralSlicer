@@ -17,12 +17,12 @@ We suggest use Anaconda as the virtual environment.
 
 **Install Steps**: 
 
-**setp 0**: Compile the [S^3-Slicer](https://github.com/zhangty019/S3_DeformFDM) code with QMake for the printing field to slicers.
+**Setp 0: Compile the [S^3-Slicer](https://github.com/zhangty019/S3_DeformFDM) code with QMake for the printing field to slicers.**
 
 1.Add a pushbutton in the file '/S3_DeformFDM/ShapeLab/MainWindow.ui'
-2.Create a correspondence slot funtion on_pushButtonXXX_Clicked(), and copy the realization from file '/thirdparty/additional/S3Slicer.cpp'.
+2.Create a correspondence slot function on_pushButtonXXX_Clicked(), and copy the realization from file '/thirdparty/additional/S3Slicer.cpp'.
 
-**setp 1: Create and config the python environment.
+**Step 1: Create and config the Python environment.**
 
 ```
 !git clone https://github.com/zhangty019/S3_DeformFDM
@@ -34,19 +34,19 @@ We suggest use Anaconda as the virtual environment.
 ![](DataSet/figures/pipline.jpg)
 
 ## Usage
-For the example of spiral fish, we first optimization the printing direction field via Neural Slicer, as
-**Step 0: Cage based Field Generation**
+For the example of spiral fish, we first optimize the printing direction field via Neural Slicer, as
+**Step 0: Cage-based Field Generation**
 ```
 !python ./main.py --exp_name spiral_fish --mesh earring_wc_wb.tet --cage None --stress None --wSF 1 --wSR 0 --wSQ 0 --wOP 0 --wRigid 100 --wConstraints 5 --wScaling 10 --wQuaternion 10 --nstep 5000 --wQuaternion 0.01 --lock_bottom --beta 2
 ```
-**Step 1: Cage based layers Generation**
+**Step 1: Cage-based layers Generation**
 Then achieve the cage based slicers by S^3-Slicer.
-and remesh via meshlab, more details in project [S^3-Slicer](https://github.com/zhangty019/S3_DeformFDM)
+And remesh via meshlab, more details in the project [S^3-Slicer](https://github.com/zhangty019/S3_DeformFDM)
 
-**Step 2: Model based layers Generation**
-Run the following code to get final layers.
+**Step 2: Model-based layers Generation**
+Run the following code to get the final layers.
 '''
-python ./utils/slicer_cut_by_implicitFunction.py --mesh earring_wc_wb.tet --output ./data/output_layers
+!python ./utils/slicer_cut_by_implicitFunction.py --mesh earring_wc_wb.tet --output ./data/output_layers
 '''
 
 
