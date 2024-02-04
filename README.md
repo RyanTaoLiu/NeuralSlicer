@@ -13,14 +13,14 @@ Please compile the S3_Slicer code with QMake in the following link before this s
 
 **Platform**: Ubuntu 20.02 + Python 3.8
 
-We suggest use Anaconda as the virtual environment.
+We suggest using Anaconda as the virtual environment.
 
 **Install Steps**: 
 
 **Setp 0: Compile the [S^3-Slicer](https://github.com/zhangty019/S3_DeformFDM) code with QMake for the printing field to slicers.**
 
-1.Add a pushbutton in the file '/S3_DeformFDM/ShapeLab/MainWindow.ui'
-2.Create a correspondence slot function on_pushButtonXXX_Clicked(), and copy the realization from file '/thirdparty/additional/S3Slicer.cpp'.
+1. Add a pushbutton in the file '/S3_DeformFDM/ShapeLab/MainWindow.ui'
+2. Create a correspondence slot function on_pushButtonXXX_Clicked(), and copy the realization from file '/thirdparty/additional/S3Slicer.cpp'.
 
 **Step 1: Create and config the Python environment.**
 
@@ -28,7 +28,7 @@ We suggest use Anaconda as the virtual environment.
 !git clone https://github.com/zhangty019/S3_DeformFDM
 !cd meshDeformation4MAAM
 !conda env create -f environment.yml
-!conda activate pct_torch 
+!conda activate pytorch3d 
 ```
 
 ![](DataSet/figures/pipline.jpg)
@@ -40,7 +40,7 @@ For the example of spiral fish, we first optimize the printing direction field v
 !python ./main.py --exp_name spiral_fish --mesh earring_wc_wb.tet --cage None --stress None --wSF 1 --wSR 0 --wSQ 0 --wOP 0 --wRigid 100 --wConstraints 5 --wScaling 10 --wQuaternion 10 --nstep 5000 --wQuaternion 0.01 --lock_bottom --beta 2
 ```
 **Step 1: Cage-based layers Generation**
-Then achieve the cage based slicers by S^3-Slicer.
+Then achieve the cage-based slicers by S^3-Slicer.
 And remesh via meshlab, more details in the project [S^3-Slicer](https://github.com/zhangty019/S3_DeformFDM)
 
 **Step 2: Model-based layers Generation**
