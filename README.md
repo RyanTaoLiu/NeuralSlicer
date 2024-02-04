@@ -1,4 +1,4 @@
-# [Neural Slicer for Multi-Axis 3D Printing](https://guoxinfang.github.io/S3_Slicer) (Technical Papers' 
+# [Neural Slicer for Multi-Axis 3D Printing](https://guoxinfang.github.io/S3_Slicer)
 
 ![](DataSet/figures/teaser.jpg)
 
