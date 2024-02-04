@@ -45,9 +45,9 @@ And remesh via meshlab, more details in the project [S^3-Slicer](https://github.
 
 **Step 2: Model-based layers Generation**
 Run the following code to get the final layers.
-'''
+```
 !python ./utils/slicer_cut_by_implicitFunction.py --mesh earring_wc_wb.tet --output ./data/output_layers
-'''
+```
 
 
 ![](DataSet/figures/printingResult.jpg)
