@@ -1,4 +1,4 @@
-# [Will release July]
+# [Will Release on July]
 # [Neural Slicer for Multi-Axis 3D Printing](https://RyanTaoLiu.github.io/NeuralSlicer)
 
 ![](DataSet/figures/teaser.jpg)
