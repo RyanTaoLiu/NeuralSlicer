@@ -3,7 +3,9 @@
 
 ![](DataSet/figures/teaser.jpg)
 
-[Tao Liu](), [Tianyu Zhang](https://www.linkedin.com/in/tianyu-zhang-49b8231b5/), Yongxue Chen, Yuming Huang, and [Charlie C.L. Wang](https://mewangcl.github.io/), [*ACM Transactions on Graphics (SIGGRAPH 2024)*, vol.41, no.6, article no.277 (15 pages), July 2024](https://doi.org/10.1145/3658212)
+[Tao Liu](https://www.linkedin.com/in/tao-liu-730942225), [Tianyu Zhang](https://www.linkedin.com/in/tianyu-zhang-49b8231b5/), Yongxue Chen, Yuming Huang, and [Charlie C.L. Wang](https://mewangcl.github.io/), [*ACM Transactions on Graphics (SIGGRAPH 2024)*, vol.43, no.4(15 pages), July 2024](https://doi.org/10.1145/3658212)
+
+[Arxiv Paper](http://arxiv.org/abs/2404.15061)
 
 ## Abstract
 We introduce a novel neural network-based computational pipeline as a representation-agnostic slicer for multi-axis 3D printing. This advanced slicer can work on models with diverse representations and intricate topology. The approach involves employing neural networks to establish a deformation mapping, defining a scalar field in the space surrounding an input model. Isosurfaces are subsequently extracted from this field to generate curved layers for 3D printing. Creating a differentiable pipeline enables us to optimize the mapping through loss functions directly defined on the field gradients as the local printing directions. New loss functions have been introduced to meet the manufacturing objectives of support-free and strength reinforcement. Our new computation pipeline relies less on the initial values of the field and can generate slicing results with significantly improved performance. [Video Link](https://www.youtube.com/watch?v=qNm1ierKuUk)
@@ -26,7 +28,7 @@ We suggest using Anaconda as the virtual environment.
 **Step 1: Create and config the Python environment.**
 
 ```
-!git clone https://github.com/zhangty019/S3_DeformFDM
+!git clone https://github.com/RyanTaoLiu/NeuralSlicer
 !cd meshDeformation4MAAM
 !conda env create -f environment.yml
 !conda activate pytorch3d 
