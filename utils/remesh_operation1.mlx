@@ -1,0 +1,17 @@
+<!DOCTYPE FilterScript>
+<FilterScript>
+ <filter name="Remeshing: Isotropic Explicit Remeshing">
+  <Param tooltip="Number of iterations of the remeshing operations to repeat on the mesh." type="RichInt" description="Iterations" name="Iterations" value="9"/>
+  <Param tooltip="Toggles adaptive isotropic remeshing." type="RichBool" description="Adaptive remeshing" name="Adaptive" value="false"/>
+  <Param tooltip="If checked the remeshing operations will be applied only to the selected faces." type="RichBool" description="Remesh only selected faces" name="SelectedOnly" value="false"/>
+  <Param tooltip="Sets the target length for the remeshed mesh edges." min="0" type="RichAbsPerc" description="Target Length" max="93.6666" name="TargetLen" value="0.74933"/>
+  <Param tooltip="Minimum angle between faces of the original to consider the shared edge as a feature to be preserved." type="RichFloat" description="Crease Angle" name="FeatureDeg" value="30"/>
+  <Param tooltip="If toggled each local operation must deviate from original mesh by [Max. surface distance]" type="RichBool" description="Check Surface Distance" name="CheckSurfDist" value="true"/>
+  <Param tooltip="Maximal surface deviation allowed for each local operation" min="0" type="RichAbsPerc" description="Max. Surface Distance" max="93.6666" name="MaxSurfDist" value="0.93667"/>
+  <Param tooltip="If checked the remeshing operations will include a refine step." type="RichBool" description="Refine Step" name="SplitFlag" value="true"/>
+  <Param tooltip="If checked the remeshing operations will include a collapse step." type="RichBool" description="Collapse Step" name="CollapseFlag" value="true"/>
+  <Param tooltip="If checked the remeshing operations will include a edge-swap step, aimed at improving the vertex valence of the resulting mesh." type="RichBool" description="Edge-Swap Step" name="SwapFlag" value="true"/>
+  <Param tooltip="If checked the remeshing operations will include a smoothing step, aimed at relaxing the vertex positions in a Laplacian sense." type="RichBool" description="Smooth Step" name="SmoothFlag" value="true"/>
+  <Param tooltip="If checked the remeshing operations will include a step to reproject the mesh vertices on the original surface." type="RichBool" description="Reproject Step" name="ReprojectFlag" value="true"/>
+ </filter>
+</FilterScript>
