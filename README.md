@@ -23,7 +23,7 @@ We suggest using Anaconda as the virtual environment.
 ### Setp 0: Compile the [S^3-Slicer](https://github.com/zhangty019/S3_DeformFDM) code with QMake for the printing field to slicers.
 
 1. Add a pushbutton in the file '/S3_DeformFDM/ShapeLab/MainWindow.ui'
-2. Create a correspondence slot function on_pushButtonXXX_Clicked(), and copy the realization from file '/thirdparty/additional/S3Slicer.cpp'.
+2. Create a correspondence slot function on_pushButtonXXX_Clicked() in '/S3_DeformFDM/ShapeLab/MainWindow.h' and '/S3_DeformFDM/ShapeLab/MainWindow.cpp', and copy the realization from file 'S3Slicer.cpp'.
 
 
 ### Step 1: Create and config the Python environment.
@@ -34,7 +34,7 @@ cd NeuralSlicer
 conda create -n NNSlicer python=3.8
 conda activate NNSlicer
 conda install pytorch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 cudatoolkit=11.3 -c pytorch
-pip install tqdm scipy numpy pymeshlab pyvista tetgen trimesh einops comet_ml
+pip install tqdm numpy scipy pymeshlab pyvista tetgen trimesh einops comet_ml 
 ```
 
 (Optional)if you would like to use docker, just download from the docker-hub,
@@ -54,6 +54,7 @@ For the example of spiral fish,
 ### Step 0: Files Location
 Download datafiles from https://drive.google.com/drive/folders/19bvwt9CdLHqdVBGZUZ3-ex9OD24y7bOu?usp=sharing
 and replace to the data folder.
+
 **Input:**
 
 Model file like tet-file lies in $PWD/data/TET_MODEL,
@@ -67,7 +68,7 @@ The result lies in $PWD/data/results/{exp_name}/{date_time}, where includes,
 
 *.obj shows the deformed boundary of models and cages, 
 
-*.txt shows the new position of points in models or cages, 
+*.txt shows the new position of points in models or cages(can read by S3Slicer), 
 
 *.ckpt is the check point file for neural network parameters.
 
@@ -91,13 +92,13 @@ python main.py --help
 ```
 
 ### Step 2: Cage-based layers Generation
-Then achieve the cage-based slicers by S^3-Slicer.
+Then achieve the cage-based layers by S^3-Slicer.
 And remesh via meshlab, more details in the project [S^3-Slicer](https://github.com/zhangty019/S3_DeformFDM)
 
-### Step 3: Model-based layers Generation
+### Step 3: Model-based layers Generation(more details will be added further)
 Run the following code to get the final layers by boolean.
 ```
-python ./utils/slicer_cut_by_implicitFunction.py --mesh spiral_fish.tet --output ./data/output_layers
+python ./utils/slicer_cut_by_implicitFunction.py
 ```
 
 

@@ -150,29 +150,3 @@ def saveObjwithExtraInformation(filepath, v, f, l=None, vn=None, vt=None):
         if l is not None:
             for it in l:
                 file.write('l {} {} \n'.format(it[0], it[1]))
-
-
-if __name__ == '__main__':
-    '''
-    tet = loadTet('./data/TET_MODEL/bunny_cut6.tet')
-    mesh = getTetBoundaryMesh(tet)
-    mesh.export('./data/bunny_cut6.obj')
-    '''
-
-    '''
-    tet = loadTet('./data/TET_MODEL/YogaNew.tet')
-    mesh = getTetBoundaryMesh(tet)
-    mesh.export('./data/TRI_MODEL/YogaNew.obj')
-    '''
-
-    '''
-    newNode = np.loadtxt(r'./data/results/yoga/2023_07_12-20_01_01/heightField_1600.txt')
-    nodesIndex, FacesIndex, _ = getVolumeMeshBoundary(tet.elem)
-    bMesh = trimesh.Trimesh(newNode[nodesIndex], FacesIndex)
-    trimesh.repair.fix_normals(bMesh)
-    bMesh.export(r'./data/results/yoga/2023_07_12-20_01_01/outMesh_1600.obj')
-    '''
-
-    tet = loadTet('./data/TET_MODEL/Shelf_Bracket_90.tet')
-    mesh = getTetBoundaryMesh(tet)
-    mesh.export('./data/TRI_MODEL/Shelf_Bracket_90.obj')

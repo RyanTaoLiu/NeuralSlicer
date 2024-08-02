@@ -7,26 +7,7 @@ import numpy as np
 import torch
 import trimesh
 from scipy.spatial import cKDTree as KDTree
-# from sklearn.utils import shuffle
 from tqdm import tqdm
-'''
-from pytorch3d.loss import chamfer
-
-
-def get_chamfer_loss():
-    """Chamfers distance loss
-    requires https://github.com/ThibaultGROUEIX/ChamferDistancePytorch to be installed
-    """
-
-    import sys, os
-    from .local_config import CD_COMPILED_PATH 
-    sys.path.append(os.path.abspath(CD_COMPILED_PATH))
-    import chamfer3D.dist_chamfer_3D as ext
-    distChamfer = ext.chamfer_3DDist()
-    return distChamfer
-
-    # return chamfer.chamfer_distance
-'''
 
 def str2bool(v):
     if isinstance(v, bool):

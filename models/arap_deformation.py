@@ -111,13 +111,11 @@ class ARAP_deformation:
     def getFixedPoints(self, boundaryPointIdx, vertices):
         # set fixed points in mesh(return index)
         if self.lockBottom:
-            # bottomYValue = vertices[boundaryPointIdx][:, 1].min() + 3
+            bottomYValue = vertices[boundaryPointIdx][:, 1].min() + 1e-2*(vertices[boundaryPointIdx][:, 1].max()-vertices[boundaryPointIdx][:, 1].min())
             # bottomYValue = -16 #0.15
-            bottomYValue = 3
+            # bottomYValue = 3
             fixPointsIdx = np.argwhere(vertices[boundaryPointIdx][:, 1] < bottomYValue).flatten()
         else:
-            # only fix one point [0]
-            # fixPointsIdx = np.zeros((1, 1))
             fixPointsIdx = []
         return fixPointsIdx
 
@@ -229,9 +227,6 @@ class ARAP_deformation:
             for vIdx, vit in enumerate(eit):
                 rowE[eIdx * 4 + vIdx] = eIdx * 4 + vIdx
                 colE[eIdx * 4 + vIdx] = vit
-                # set default weight or volume based weight
-                # dataWeight[eIdx * 4 + vIdx] = vol
-        # dataWeight /= totalVol
 
         E = ssp.coo_matrix((dataE, (rowE, colE)), shape=(4 * elem.shape[0], node.shape[0]))
         rowN = np.zeros(4 * 4 * elem.shape[0])
@@ -493,7 +488,6 @@ class ARAP_deformation:
         # return 1. - 1. / (1 + torch.exp(-var * (value - interruptValue)))
         return 1 - torch.sigmoid(var * (value - interruptValue))
 
-    # loss functions(rigid, scaling, quaternion loss default set in cage)
     def rigidLoss(self, scaleMatrix):
         w = self.weights['wRigid']
         if w < 1e-7:
@@ -501,8 +495,6 @@ class ARAP_deformation:
         else:
             loss1 = abs(scaleMatrix - 1).norm('fro')
             loss1 /= scaleMatrix.flatten().shape[0]
-            # loss = (abs(scaleMatrix) + 1 / (abs(scaleMatrix) + 1e-9) - 2).norm('fro')
-            # loss /= scaleMatrix.flatten().shape[0]
             loss2 = scaleMatrix.squeeze(0).var(dim=1).mean()
             return w * loss1 + self.weights['wRigidInSameElement'] * loss2
 
@@ -520,7 +512,6 @@ class ARAP_deformation:
             loss /= scaleMatrix.flatten().shape[0]
             '''
             loss = abs(scaleMatrix - 1).sum(1).mean()
-            # loss = torch.var(scaleMatrix, dim=0).mean()
             return w * loss
 
     def scaleLoss(self, scaleMatrix):
@@ -912,20 +903,7 @@ class ARAP_deformation:
             self.initScalar2GradientCage()
             self.optCageNodes = newNodes
 
-            '''
-            mesh_elem_flowing = mesh_vertices_flowing[self.mesh_elem]
-            mesh_elem_flowing_minus_center = mesh_elem_flowing - \
-                                             mesh_elem_flowing.mean(dim=1, keepdim=True).expand(-1, 4, -1)
-            
-            affine_matrix = torch.bmm(self.mesh_elem_R_inv, mesh_elem_flowing_minus_center) + \
-                            torch.eye(3).expand(self.mesh_elem_R_inv.shape[0], -1, -1).to(self.device)
-            S = torch.linalg.svdvals(affine_matrix)
-            # S = affine_matrix.abs().sum(1)
-            # print('(S-1)_norm: {}'.format((S-1).abs().norm('fro')))
-            '''
         else:
-            # affine_matrix = scaleVector.unsqueeze(-1).expand(-1, -1, 3, -1) * quaternion_to_matrix(quaternion)
-            # affine_matrix = affine_matrix.squeeze(0)
             new_mesh_boundary_vertices = newBoundaryNodes
             new_mesh_vertices = newNodes
 
@@ -939,20 +917,6 @@ class ARAP_deformation:
         _scalingLoss = self.scaleLoss(scaleVector)
         _rigidLoss = self.rigidLoss(scaleVector)
 
-        ## loss in ori-mesh
-        # _scalingLoss = self.scaleLossMesh(S)
-        # _rigidLoss = self.rigidLossMesh(S)
-        # _quaternionLoss = self.quaternionLossMesh(affine_matrix)
-
-        # _scalingLoss = torch.tensor(0).float().cuda()
-        # _rigidLoss = torch.tensor(0).float().cuda()
-        # _quaternionLoss = torch.tensor(0).float().cuda()
-
-        # less is better, for following loss functions
-        # every loss in each element from [-1, 0]
-        # _supportFreePunishmentLoss = self.supportFreePunishmentLoss(new_mesh_boundary_vertices)
-        # _overhangPointsPunishmentLoss = self.overhangPointsPunishmentLoss(new_mesh_boundary_vertices)
-
         _combinedSupportFreePunishmentLoss = self.combinedSupportFreePunishmentLoss(new_mesh_boundary_vertices)
         _strengthReinforcePunishmentLoss = self.strengthReinforcePunishmentLossByGradient(new_mesh_vertices)
         _surfaceQualityPunishmentLoss = self.surfaceQualityPunishmentLoss(new_mesh_boundary_vertices)
@@ -964,6 +928,7 @@ class ARAP_deformation:
                                     _surfaceQualityPunishmentLoss
         self.initScalar2GradientCage()
         cageGradient = self.scalar2GradientCage(newNodes.squeeze(0)[:, 1])
+        
         # for inner elements
         punishmentInnerLossList = _strengthReinforcePunishmentLoss[self.mesh_inner_elem_idx]
         _punishmentLoss = (punishmentBoundaryLossAll.mean() * self.mesh_boudary_face_elem_idx.shape[0] +
@@ -990,11 +955,7 @@ class ARAP_deformation:
             _shell_punishmentLoss = (self.shell_supportFreePunishmentLoss(new_shell_vertices) +
                                      self.shell_strengthReinforcePunishmentLossByGradient(cageGradient)) * self.w_shell
             _punishmentLoss += _shell_punishmentLoss.mean()
-        # test for single loss
-        # _punishmentLoss = (_strengthReinforcePunishmentLoss.mean()) * (1/(1-self.maxStressPercent))
-        # _punishmentLoss = _supportFreePunishmentLoss.mean()
-        # _punishmentLoss = _combinedSupportFreePunishmentLoss.mean()
-
+            
         _loss = _quaternionLoss + _scalingLoss + _rigidLoss + _punishmentLoss * self.weights['wConstraints']
 
         _loss_dict = {
@@ -1005,69 +966,3 @@ class ARAP_deformation:
             '_punishmentLoss': _punishmentLoss * self.weights['wConstraints']
         }
         return _loss, _loss_dict
-
-
-if __name__ == '__main__':
-    from torch.autograd import Variable
-    import scipy.io as sio
-
-    test_list = [
-        ["qs", "qs", "qs", "qs", "qs", "qs", "qs"],
-        [1, 0, 0, 0, 1, 1, 1],
-        [0.707, 0.707, 0, 0, 1, 1, 1],
-        [0.707, 0, 0.707, 0, 1, 1, 1],
-        [0.707, 0, 0, 0.707, 1, 1, 1],
-        [0.833, 0.458, -0.271, -0.149, 1, 1, 1],
-    ]
-
-    for i in range(len(test_list)):
-        arap = ARAP_deformation(device='cuda')
-        stressList = loadStress('./data/fem_result/Shelf_Bracket.txt')
-
-        '''
-        mesh = loadTet('./data/TET_MODEL/Shelf_Bracket.tet')
-        cage = trimesh.load('./data/cage/Shelf_Bracket_cage14000.obj')
-        '''
-
-        mesh = loadTet('./data/TET_MODEL/Shelf_Bracket.tet')
-        cage = trimesh.load('./data/cage/Shelf_Bracket_cage14000.obj')
-        arap.initARAP(mesh, cage, stressList)
-
-        # inputQS = torch.tensor([0.707, 0.707, 0, 0, 1, 1, 1], dtype=float, device='cuda').expand(arap.elem.shape[0], -1)
-        # inputQS = torch.tensor([1, 0, 0, 0, 1, 1, 1], dtype=float, device='cuda').expand(arap.elem.shape[0], -1)
-        # inputQS = torch.tensor(test_list[i], dtype=float, device='cuda').expand(arap.elem.shape[0], -1)
-
-        M = sio.loadmat('qs.mat')
-        if i == 0:
-            inputQS = torch.from_numpy(M['qs']).cuda()
-        else:
-            inputQS = torch.tensor(test_list[i], dtype=float, device='cuda').expand(arap.elem.shape[0], -1)
-        inputQS = Variable(inputQS, requires_grad=True)
-
-        arap.weights = {
-            'wConstraints': 1,
-            'wSF': 0,
-            'wSR': 1,
-            'wSQ': 0,
-            'wOP': 0,
-
-            'wRegulation': 1e-4,
-            'wRegulation1': 1e4,
-
-            'wRigid': 100,
-            'wScaling': 1,
-            'wQuaternion': 1,
-        }
-        arap.paramaters['beta'] = np.deg2rad(30)
-
-        Loss, loss_dict = arap.loss(inputQS)
-        print('*' * 20)
-        print(str(test_list[i][0:4]))
-        print(loss_dict)
-        print('*' * 20)
-
-        Loss.backward()
-        print(inputQS.grad)
-
-        tmesh = trimesh.Trimesh(arap.optMeshBoundaryNodes.detach().numpy(), arap.newF)
-        tmesh.export('out_{}.obj'.format(i))

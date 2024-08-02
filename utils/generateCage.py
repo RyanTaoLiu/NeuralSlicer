@@ -48,12 +48,3 @@ def generateCage(inputMesh: str,
 
 
 
-
-if __name__ == '__main__':
-    __generateCage('./data/TRI_MODEL/bunny_cut6.obj 1 10000r None Volume ./data/bunny_cut6_cage10000')
-    # __generateCage('./data/Shelf_Bracket.obj 1 4000r None Volume ./data/Shelf_Bracket_cage4000')
-    # __generateCage('./data/fertility.obj 1 5000r None Volume ./data/fertility_cage5000')
-    # __generateCage('./data/bridgeSmall_convexhull_refinement.obj 1 3000r None Volume ./data/bridgeSmall_convexhull_cage3000')
-    shutil.copyfile('./data/bunny_cut6_cage10000_1.obj', './data/cage/bunny_cut6_cage10000.obj')
-
-

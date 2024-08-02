@@ -55,22 +55,9 @@ class Siren(nn.Module):
                 self.weight = nn.Parameter(torch.zeros(dim_out, dim_in))
                 idenityDeformation = torch.tensor([1, 0, 0, 0, 1, 1, 1], dtype=float)
                 self.bias = nn.Parameter(idenityDeformation)
-            elif dim_out == 3:  # flowing or gradient
-                self.weight = nn.Parameter(torch.zeros(dim_out, dim_in))
-                idenityDeformation = torch.tensor([0, 0, 0], dtype=float)
-                idenityDeformation += torch.rand_like(idenityDeformation) * 1e-5
-                self.bias = nn.Parameter(idenityDeformation)
-            elif dim_out == 1:
-                self.weight = nn.Parameter(torch.zeros(dim_out, dim_in))
-                idenityDeformation = torch.tensor([0], dtype=float)
-                idenityDeformation += torch.rand_like(idenityDeformation) * 1e-5
-                self.bias = nn.Parameter(idenityDeformation)
             else:
                 raise ('Cannot support the dim out init for the last layer')
-            '''
-            self.weight = nn.Parameter(weight)
-            self.bias = nn.Parameter(bias) if use_bias else None
-            '''
+
         self.activation = Sine(w0) if activation is None else activation
         # self.activation = nn.ReLU() if activation is None else activation
 
@@ -197,7 +184,6 @@ class TransformationWrapper(nn.Module):
 
         qs = self.net(pos, mods=None)
         rotation = self.global_rotaion_forward(latent) + torch.tensor([1, 0, 0, 0]).to(latent.device)
-        # out[:, :4] += rotation.expand(out.shape[0], -1)
         q = quaternion_multiply(rotation.expand(qs.shape[0], -1), qs[:, :4])
         s = qs[:, 4:]
         return torch.hstack((q,s))
@@ -213,33 +199,3 @@ class FlowingWrapper(nn.Module):
     def forward(self, pos, latent=None):
         out = self.net(pos, mods=None)
         return out
-
-
-if __name__ == '__main__':
-    net = SirenNet(
-        dim_in=2,  # input dimension, ex. 2d coor
-        dim_hidden=256,  # hidden dimension
-        dim_out=3,  # output dimension, ex. rgb value
-        num_layers=5,  # number of layers
-        w0_initial=30.  # different signals may require different omega_0 in the first layer - this is a hyperparameter
-    )
-
-    '''
-    wrapper = SirenWrapper(
-        net,
-        latent_dim=512,
-        image_width=256,
-        image_height=256
-    )
-
-    latent = nn.Parameter(torch.zeros(512).normal_(0, 1e-2))
-    img = torch.randn(1, 3, 256, 256)
-
-    loss = wrapper(img, latent=latent)
-    loss.backward()
-
-    # after much training ...
-    # simply invoke the wrapper without passing in anything
-
-    pred_img = wrapper(latent=latent)  # (1, 3, 256, 256)
-    '''

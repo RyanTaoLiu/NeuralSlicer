@@ -201,12 +201,3 @@ def saveTet(fliePath, node, elem):
             f.write('{} {} {}\n'.format(node[i][0], node[i][1], node[i][2]))
         for i in range(elem.shape[0]):
             f.write('{} {} {} {} {}\n'.format(4, elem[i][0], elem[i][1], elem[i][2], elem[i][3]))
-
-
-if __name__ == '__main__':
-    '''
-    mesh = trimesh.load_mesh('./data/cage/bunnyHeadCage1.obj')
-    node, elem, grid, newV, newF = tetrahedron_generate_from_mesh(mesh)
-    saveTet('./data/cage/bunnyHeadCage1.tet', node, elem)
-    '''
-    pass
