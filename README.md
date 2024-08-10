@@ -108,7 +108,14 @@ python ./utils/slicer_cut_by_implicitFunction.py
 
 
 ![](DataSet/figures/printingResult.jpg)
+## Reference
++ Tao Liu, Tianyu Zhang, Yongxue Chen, Yuming Huang, and Charlie C. L. Wang. 2024. Neural Slicer for Multi-Axis 3D Printing. ACM Transactions on Graphics, vol.43, no.4, Article 85 (15 pages), July 2024.
 
++ Tianyu Zhang, Yuming Huang, Piotr Kukulski, Neelotpal Dutta, Guoxin Fang, and Charlie C.L. Wang, "Support generation for robot-assisted 3D printing with curved layers", IEEE International Conference on Robotics and Automation (ICRA 2023), London, United Kingdom, May 29 - June 2, 2023.
+
++ Guoxin Fang, Tianyu Zhang, Sikai Zhong, Xiangjia Chen, Zichun Zhong, and Charlie C.L. Wang, "Reinforced FDM: Multi-axis filament alignment with controlled anisotropic strength", ACM Transactions on Graphics (SIGGRAPH Asia 2020), vol.39, no.6, article no.204 (15 pages), November 2020.
+
++ Tianyu Zhang, Guoxin Fang, Yuming Huang, Neelotpal Dutta, Sylvain Lefebvre, Zekai Murat Kilic, and Charlie C. L. Wang. 2022. S3-Slicer: A General Slicing Framework for Multi-Axis 3D Printing. ACM Transactions on Graphics (SIGGRAPH Asia 2022), vol.41, no.6, Article 204 (15 pages), December 2022.
 ## Contact Information
 Tao Liu      (tao.liu@manchester.ac.uk)
 
