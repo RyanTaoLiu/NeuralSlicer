@@ -51,8 +51,14 @@ docker build . -t nnslicer
 
 For the example of spiral fish,
 ### Step 0: Files Location
-Download datafiles from https://drive.google.com/drive/folders/19bvwt9CdLHqdVBGZUZ3-ex9OD24y7bOu?usp=sharing
+Download datafiles from [google drive](https://drive.google.com/drive/folders/19bvwt9CdLHqdVBGZUZ3-ex9OD24y7bOu?usp=sharing)
 and replace to the data folder.
+
+
+Optional use this code to download data(need to install gdown and tarfile)
+```
+python .\utils\data_download.py
+```
 
 **Input:**
 
